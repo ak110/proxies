@@ -18,7 +18,7 @@ if [ -v http_proxy ] ; then
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange" >> /etc/squid/squid.conf
     elif [ "$proxy_pass" == "" ] ; then
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange login=$proxy_user" >> /etc/squid/squid.conf
-    elif [ "$proxy_pass" == "" ] ; then
+    else
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange login=$proxy_user:$proxy_pass" >> /etc/squid/squid.conf
     fi
 fi
@@ -28,6 +28,11 @@ chown proxy:proxy /var/log/squid /var/spool/squid
 
 # キャッシュ作成
 squid -z -F
+
+# 起動後に設定をクリア
+if [ -v http_proxy -a "$proxy_user" != "" ] ; then
+    (sleep 10s ; sed -ie '/^cache_peer /d' /etc/squid/squid.conf) &
+fi
 
 # 実行
 squid -N -X
