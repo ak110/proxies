@@ -1,8 +1,7 @@
 #!/bin/bash
 set -eux
 
-sed -ie "s#STORE_AVG_OBJECT_SIZE#${STORE_AVG_OBJECT_SIZE}#g" /etc/squid/squid.conf
-sed -ie "s#STORE_AVG_OBJECT_UNIT#${STORE_AVG_OBJECT_UNIT}#g" /etc/squid/squid.conf
+sed -ie "s#MAXIMUM_OBJECT_MB#${MAXIMUM_OBJECT_MB}#g" /etc/squid/squid.conf
 sed -ie "s#DISK_CACHE_MB#${DISK_CACHE_MB}#g" /etc/squid/squid.conf
 
 if [ -v http_proxy ] ; then
@@ -30,8 +29,10 @@ chown proxy:proxy /var/log/squid /var/spool/squid
 squid -z -F
 
 # 起動後に設定をクリア
-if [ -v http_proxy -a "$proxy_user" != "" ] ; then
-    (sleep 10s ; sed -ie '/^cache_peer /d' /etc/squid/squid.conf) &
+if [ -v http_proxy ] ; then
+    if [ "$proxy_user" != "" ] ; then
+        (sleep 10s ; sed -ie '/^cache_peer /d' /etc/squid/squid.conf) &
+    fi
 fi
 
 # 実行

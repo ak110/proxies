@@ -8,11 +8,11 @@
 
 プロキシ無し:
 
-    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=STORE_AVG_OBJECT_SIZE=1 --env=STORE_AVG_OBJECT_UNIT=GB --env=DISK_CACHE_MB=10240 --name=squid squid && docker logs squid -f
+    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=MAXIMUM_OBJECT_MB=1024 --env=DISK_CACHE_MB=10240 --name=squid squid && docker logs squid -f
 
 プロキシあり:
 
-    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=STORE_AVG_OBJECT_SIZE=1 --env=STORE_AVG_OBJECT_UNIT=GB --env=DISK_CACHE_MB=10240 --env=http_proxy=$http_proxy --name=squid squid && docker logs squid -f
+    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=MAXIMUM_OBJECT_MB=1024 --env=DISK_CACHE_MB=10240 --env=http_proxy=$http_proxy --name=squid squid && docker logs squid -f
 
 ## 停止
 
