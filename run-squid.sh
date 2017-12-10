@@ -36,4 +36,5 @@ if [ -v http_proxy ] ; then
 fi
 
 # 実行
-squid -N -X
+cron
+squid -N
