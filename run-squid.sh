@@ -14,10 +14,13 @@ if [ -v http_proxy ] ; then
     proxy_host=$3
     proxy_port=$4
     if [ "$proxy_user" == "" ] ; then
+        sed -ie '/^cache_peer /d' /etc/squid/squid.conf
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange" >> /etc/squid/squid.conf
     elif [ "$proxy_pass" == "" ] ; then
+        sed -ie '/^cache_peer /d' /etc/squid/squid.conf
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange login=$proxy_user" >> /etc/squid/squid.conf
     else
+        sed -ie '/^cache_peer /d' /etc/squid/squid.conf
         echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange login=$proxy_user:$proxy_pass" >> /etc/squid/squid.conf
     fi
 fi
