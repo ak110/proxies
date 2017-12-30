@@ -1,28 +1,43 @@
-# Squid
+# proxies
+
+squidと、aptとpipのキャッシュサーバ。
 
 ## ビルド
 
-    docker build --build-arg=http_proxy=$http_proxy --build-arg=https_proxy=$https_proxy --tag=squid .
+    docker-compose build --build-arg=http_proxy=$http_proxy --build-arg=https_proxy=$https_proxy squid cache-server-apt cache-server-pip
 
 ## 起動
 
-プロキシ無し:
-
-    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=MAXIMUM_OBJECT_MB=1024 --env=DISK_CACHE_MB=10240 --name=squid squid && docker logs squid -f
-
-プロキシあり:
-
-    docker run --detach --restart=always --volume=$PWD/log:/var/log/squid --volume=$PWD/cache:/var/spool/squid --publish=33128:3128 --env=MAXIMUM_OBJECT_MB=1024 --env=DISK_CACHE_MB=10240 --env=http_proxy=$http_proxy --name=squid squid && docker logs squid -f
+    docker-compose up -d
+    docker-compose logs -f
 
 ## 停止
 
-    docker rm -f squid
+    docker-compose down
 
 ## 確認
 
-    http_proxy=http://localhost:33128 wget -O- http://www.google.co.jp | head -10
+    http_proxy=http://localhost:33128 wget -O- http://www.yahoo.co.jp | head -10
+    http_proxy=http://localhost:33142 wget -O- http://www.yahoo.co.jp
+    http_proxy=http://localhost:33141 wget -O- http://www.yahoo.co.jp
 
-## 環境変数
+## 使い方
 
-    export http_proxy=http://localhost:33128
-    export https_proxy=https://localhost:33128
+### squid
+
+    export http_proxy=http://xxxx:33128
+    export https_proxy=https://xxxx:33128
+
+### apt
+
+以下のどれかをやる。(他にもあるけどとりあえず)
+
+- `export http_proxy=http://xxxx:33142/`
+- `/etc/apt/apt.conf.d/` 配下に `Acquire::http::Proxy "http://xxxx:33142/";` のようなファイルを作る
+
+### pip
+
+以下のどれかをやる。(他にもあるけどとりあえず)
+
+- `export PIP_TRUSTED_HOST=xxxx`, `export PIP_INDEX_URL=http://xxxx:33141/root/pypi/`
+- pipの引数に `--trusted-host xxxx --index-url http://xxxx:33141/root/pypi/`

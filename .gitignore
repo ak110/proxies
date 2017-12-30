@@ -1,2 +1,6 @@
-cache
-log
+cache-apt
+cache-pip
+cache-squid
+log-apt
+log-pip
+log-squid

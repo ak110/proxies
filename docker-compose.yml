@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  proxy:
+    build:
+      context: ./docker-squid
+    restart: always
+    container_name: proxy
+    volumes:
+      - ./log-squid:/var/log/squid
+      - ./cache-squid:/var/spool/squid
+    ports:
+      - "33128:3128"
+    environment:
+      - MAXIMUM_OBJECT_MB=1024
+      - DISK_CACHE_MB=10240
+      - http_proxy=$http_proxy
+    networks:
+      - proxies-network
+
+  proxy-apt:
+    build:
+      context: ./docker-apt
+    container_name: proxy-apt
+    restart: always
+    volumes:
+      - ./log-apt:/var/log/apt-cacher-ng
+      - ./cache-apt:/var/cache/apt-cacher-ng
+    ports:
+      - "33142:3142"
+    environment:
+      - http_proxy=http://proxy:3128/
+      - https_proxy=http://proxy:3128/
+    networks:
+      - proxies-network
+
+  proxy-pip:
+    build:
+      context: ./docker-pip
+    container_name: proxy-pip
+    restart: always
+    volumes:
+      - ./log-pip:/var/log
+      - ./cache-pip:/cache
+    ports:
+      - "33141:3141"
+    environment:
+      - http_proxy=http://proxy:3128/
+      - https_proxy=http://proxy:3128/
+    networks:
+      - proxies-network
+
+networks:
+  proxies-network:
