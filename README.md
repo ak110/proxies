@@ -19,15 +19,15 @@ squidと、aptとpipのキャッシュサーバ。
 
 ### squid
 
-    http_proxy=http://localhost:33128 wget -O- http://www.yahoo.co.jp | head -10
+    http_proxy=http://localhost:33128 wget -qO- http://www.yahoo.co.jp | head -3
 
 ### apt
 
-    sudo env http_proxy=http://localhost:33142/ apt-get download sl
+    pushd /tmp && (sudo env http_proxy=http://localhost:33142/ apt-get download sl && sudo bash -c 'rm -fv /tmp/sl_*.deb') ; popd
 
 ### pip
 
-    PIP_TRUSTED_HOST=localhost PIP_INDEX_URL=http://localhost:33141/root/pypi/ pip download --no-cache-dir --dest=/tmp tqdm && rm -f /tmp/tqdm-*.whl
+    http_proxy= PIP_TRUSTED_HOST=localhost PIP_INDEX_URL=http://localhost:33141/root/pypi/ pip download --no-cache-dir --dest=/tmp tqdm && bash -c 'rm -fv /tmp/tqdm-*.whl'
 
 ## 使い方
 
