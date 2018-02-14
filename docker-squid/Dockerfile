@@ -5,6 +5,8 @@ RUN set -x && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes squid cron && \
     rm -rf /var/lib/apt/lists/*
 
+ENV http_proxy=$http_proxy https_proxy=$https_proxy
+
 COPY cron.squid /etc/cron.d/
 COPY squid.conf /etc/squid/
 COPY run-squid.sh ./

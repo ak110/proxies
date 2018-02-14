@@ -6,8 +6,9 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+ENV http_proxy=$http_proxy https_proxy=$https_proxy
 RUN set -x && \
-    echo "Proxy: $http_proxy" >> /etc/apt-cacher-ng/local.conf
+    echo "Proxy: $http_proxy" >> /etc/apt-cacher-ng/acng.conf
 
 COPY run.sh /
 CMD ["/bin/bash", "/run.sh"]

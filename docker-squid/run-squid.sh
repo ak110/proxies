@@ -29,13 +29,6 @@ chown proxy:proxy /var/log/squid /var/spool/squid
 # キャッシュ作成
 squid -z -F
 
-# 起動後に設定をクリア
-if [ -v http_proxy ] ; then
-    if [ "$proxy_user" != "" ] ; then
-        (sleep 10s ; sed -ie '/^cache_peer /d' /etc/squid/squid.conf) &
-    fi
-fi
-
 # 実行
 cron
 squid -N
