@@ -2,8 +2,10 @@ FROM python:3.6
 
 RUN pip install --no-cache-dir devpi-server
 
-ENV http_proxy=$http_proxy https_proxy=$https_proxy
+ARG ENV_HTTP_PROXY=$http_proxy
+ENV http_proxy="$ENV_HTTP_PROXY" \
+    https_proxy="$ENV_HTTP_PROXY"
 
 COPY run.sh /
-CMD ["/bin/bash", "/run.sh"]
+CMD ["/run.sh"]
 

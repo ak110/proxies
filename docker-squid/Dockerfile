@@ -1,13 +1,14 @@
 FROM ubuntu:xenial
 
+ARG DEBIAN_FRONTEND=noninteractive
 RUN set -x && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes squid cron && \
+    apt-get update && \
+    apt-get install --yes squid cron && \
     rm -rf /var/lib/apt/lists/*
 
 ENV http_proxy=$http_proxy https_proxy=$https_proxy
 
 COPY cron.squid /etc/cron.d/
 COPY squid.conf /etc/squid/
-COPY run-squid.sh ./
-CMD ["/bin/bash", "run-squid.sh"]
+COPY run.sh /
+CMD ["/run.sh"]

@@ -21,8 +21,7 @@ services:
     build:
       context: ./docker-apt
       args:
-        - http_proxy=http://proxy:3128/
-        - https_proxy=http://proxy:3128/
+        - ENV_HTTP_PROXY=http://proxy:3128/
     container_name: proxy-apt
     restart: always
     volumes:
@@ -37,8 +36,7 @@ services:
     build:
       context: ./docker-pip
       args:
-        - http_proxy=http://proxy:3128/
-        - https_proxy=http://proxy:3128/
+        - ENV_HTTP_PROXY=http://proxy:3128/
     container_name: proxy-pip
     restart: always
     volumes:
