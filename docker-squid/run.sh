@@ -25,12 +25,11 @@ if [ -v http_proxy ] ; then
     fi
 fi
 
-# volume
 chown proxy:proxy /var/log/squid /var/spool/squid
+
+killall squid || true
 
 # キャッシュ作成
 squid -z -F
-
 # 実行
-cron
 squid -N
