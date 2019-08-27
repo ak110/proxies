@@ -31,5 +31,9 @@ killall squid || true
 
 # キャッシュ作成
 squid -z -F
+# pidが残っていれば削除
+if [ -f /var/run/squid.pid ] ; then
+    rm -f /var/run/squid.pid
+fi
 # 実行
 squid -N
