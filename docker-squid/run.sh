@@ -22,6 +22,9 @@ if [ -v http_proxy ] ; then
         else
             echo "cache_peer $proxy_host parent $proxy_port 0 no-query no-netdb-exchange login=$proxy_user:$proxy_pass" >> /etc/squid/squid.conf
         fi
+        sed -ie '/^never_direct allow/d' /etc/squid/squid.conf
+        echo "never_direct allow all" >> /etc/squid/squid.conf
+        echo "never_direct allow CONNECT" >> /etc/squid/squid.conf
     fi
 fi
 
