@@ -38,5 +38,7 @@ squid -z -F
 if [ -f /var/run/squid.pid ] ; then
     rm -f /var/run/squid.pid
 fi
+# 起動ごとにログローテート (手抜き)
+squid -k rotate || true
 # 実行
 squid -N
