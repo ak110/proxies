@@ -4,7 +4,7 @@ squidと、aptとpipのキャッシュサーバ。
 
 ## ビルド
 
-    docker-compose build --build-arg=http_proxy=$http_proxy --build-arg=https_proxy=$https_proxy proxy proxy-apt proxy-pip
+    docker-compose build --pull --build-arg=http_proxy=$http_proxy --build-arg=https_proxy=$https_proxy proxy proxy-apt proxy-pip
 
 ## 起動
 
