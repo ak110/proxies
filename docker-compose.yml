@@ -7,7 +7,6 @@ services:
     restart: always
     container_name: proxy
     volumes:
-      - ./log-squid:/var/log/squid
       - ./cache-squid:/var/spool/squid
     ports:
       - "33128:3128"

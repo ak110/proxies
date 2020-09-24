@@ -19,6 +19,6 @@ RUN set -x && \
     ln -s /dev/stderr /var/log/apt-cacher-ng/apt-cacher.err
 
 HEALTHCHECK --interval=10s --timeout=2s --retries=3 \
-    CMD wget -q -t1 -O /dev/null  http://localhost:3142/acng-report.html || exit 1
+    CMD http_proxy= wget -q -t1 -O /dev/null http://localhost:3142/acng-report.html || exit 1
 
 CMD ["/usr/sbin/apt-cacher-ng", "-c", "/etc/apt-cacher-ng"]
